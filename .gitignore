@@ -1,0 +1,9 @@
+.allure
+.idea
+allure-results
+build
+target
+*.iml
+!.gitignore
+/*.json
+src/test/java/ru/otr/ffoms/test/unit/*
