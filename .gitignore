@@ -6,4 +6,4 @@ target
 *.iml
 !.gitignore
 /*.json
-src/test/java/ru/otr/ffoms/test/unit/*
+src/test/java/ru/bootdev/test/unit/*
