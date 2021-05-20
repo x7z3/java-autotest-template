@@ -4,6 +4,10 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.TmsLink;
 import io.qameta.allure.model.Link;
 import io.qameta.allure.util.ResultsUtils;
+import io.restassured.RestAssured;
+import io.restassured.filter.log.ErrorLoggingFilter;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import org.junit.platform.engine.TestExecutionResult;
 import org.junit.platform.engine.TestSource;
 import org.junit.platform.engine.support.descriptor.MethodSource;
@@ -33,6 +37,11 @@ import static ru.bootdev.test.core.tm4j.TestCaseId.getTestCaseIdByMethodName;
 public class SuiteListener implements TestExecutionListener {
 
     @Override
+    public void testPlanExecutionStarted(TestPlan testPlan) {
+        restAssuredSetUp();
+    }
+
+    @Override
     public void executionFinished(TestIdentifier testIdentifier, TestExecutionResult testExecutionResult) {
         Method testMethod = getMethodFromTestIdentifier(testIdentifier);
         if (testMethod != null) {
@@ -45,6 +54,11 @@ public class SuiteListener implements TestExecutionListener {
     public void testPlanExecutionFinished(TestPlan testPlan) {
         if (JiraProperties.JIRA_IS_SEND_RESULTS_ENABLED) sendJiraResults();
         if (AllureProperties.ALLURE_IS_SEND_RESULTS_ENABLED) sendAllureResults();
+    }
+
+    private void restAssuredSetUp() {
+        RestAssured.filters(new RequestLoggingFilter(), new ResponseLoggingFilter(), new ErrorLoggingFilter());
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     }
 
     private void setAllureTmsLink(Method testMethod) {

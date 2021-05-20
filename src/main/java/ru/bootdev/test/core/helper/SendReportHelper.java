@@ -24,6 +24,6 @@ public class SendReportHelper {
     private static int sendMultipartRequest(RequestSpecification givenRequest, String url, String fileField, File... files) {
         givenRequest.contentType("multipart/form-data").accept(ContentType.ANY);
         Arrays.asList(files).forEach(file -> givenRequest.multiPart(fileField, file));
-        return givenRequest.log().all().when().post(url).then().log().all().extract().statusCode();
+        return givenRequest.when().post(url).then().extract().statusCode();
     }
 }

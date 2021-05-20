@@ -5,7 +5,6 @@ import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
 import java.io.File;
-import java.net.URL;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
@@ -15,28 +14,29 @@ public class BaseRequest {
     protected final static String MULTIPART_FORM_DATA = "multipart/form-data";
 
     public ValidatableResponse get(String url) {
-        return given().accept(ContentType.ANY).log().all().when().get(url).then().log().all();
-    }
-
-    public <T> T sendPostJsonRequest(URL url, File body, Integer expectedStatusCode, Class<T> responseModel) {
-        return given().contentType(ContentType.JSON).body(body).log().all().
-                when().log().all().post(url).
-                then().log().all().statusCode(expectedStatusCode).extract().body().as(responseModel);
+        return given().accept(ContentType.ANY).when().get(url).then();
     }
 
     public ValidatableResponse postMultipart(String url, String fileField, File... files) {
         RequestSpecification givenRequest = given().accept(ContentType.ANY).contentType(MULTIPART_FORM_DATA);
         Arrays.asList(files).forEach(file -> givenRequest.multiPart(fileField, file));
-        return givenRequest.log().all().when().post(url).then().log().all();
+        return givenRequest.when().post(url).then();
     }
 
-    public ValidatableResponse postJson(String url, String json) {
-        return given().accept(ContentType.ANY).contentType(ContentType.JSON).body(json).log().all()
-                .when().post(url).then().log().all();
+    private RequestSpecification givenContentTypeJson() {
+        return given().accept(ContentType.ANY).contentType(ContentType.JSON);
+    }
+
+    public ValidatableResponse postJson(String url, File jsonBody) {
+        return givenContentTypeJson().body(jsonBody).when().post(url).then();
+    }
+
+    public ValidatableResponse postJson(String url, String jsonBody) {
+        return givenContentTypeJson().body(jsonBody).when().post(url).then();
     }
 
     public ValidatableResponse delete(String url) {
-        return given().accept(ContentType.ANY).log().all().when().delete(url).then().log().all();
+        return given().accept(ContentType.ANY).when().delete(url).then();
     }
 
     public String joinUrl(String baseUrl, String... urlParts) {
