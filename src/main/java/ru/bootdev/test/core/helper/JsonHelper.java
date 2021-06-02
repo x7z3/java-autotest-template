@@ -3,6 +3,7 @@ package ru.bootdev.test.core.helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.File;
 import java.io.IOException;
@@ -58,5 +59,21 @@ public class JsonHelper {
 
     public static JsonNode getJsonNode(URL url) throws IOException {
         return mapper.readTree(url);
+    }
+
+    public static ObjectNode getObjectNode(JsonNode jsonNode, String jsonPath) {
+        return (ObjectNode) jsonNode.at(jsonPath);
+    }
+
+    public static ObjectNode getObjectNode(File jsonFile, String jsonPath) throws IOException {
+        return getObjectNode(getJsonNode(jsonFile), jsonPath);
+    }
+
+    public static ObjectNode getObjectNode(String jsonString, String jsonPath) throws IOException {
+        return getObjectNode(getJsonNode(jsonString), jsonPath);
+    }
+
+    public static ObjectNode getObjectNode(URL url, String jsonPath) throws IOException {
+        return getObjectNode(getJsonNode(url), jsonPath);
     }
 }
