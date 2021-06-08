@@ -25,8 +25,8 @@ public class JsonHelper {
         return compareJsonNodes(getJsonNode(json1), getJsonNode(json2));
     }
 
-    private static Boolean compareJsonNodes(JsonNode jsonNode1, JsonNode jsonNode2) {
-        return jsonNode1.equals(jsonNode2);
+    private static Boolean compareJsonNodes(JsonNode a, JsonNode b) {
+        return a.equals(b);
     }
 
     public static String objectToJsonString(Object object) throws JsonProcessingException {
@@ -75,5 +75,13 @@ public class JsonHelper {
 
     public static ObjectNode getObjectNode(URL url, String jsonPath) throws IOException {
         return getObjectNode(getJsonNode(url), jsonPath);
+    }
+
+    public static String jsonNodeToString(Object jsonNode) throws JsonProcessingException {
+        return mapper.writeValueAsString(jsonNode);
+    }
+
+    public static Boolean compareObjectNodes(ObjectNode a, ObjectNode b) {
+        return a.equals(b);
     }
 }

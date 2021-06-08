@@ -92,4 +92,8 @@ public class FileHelper {
     public static String readFile(Path path) throws IOException {
         return new String(Files.readAllBytes(path));
     }
+
+    public static void writeFile(File file, String text) throws IOException {
+        Files.write(file.toPath(), text.getBytes());
+    }
 }
