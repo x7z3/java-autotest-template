@@ -19,4 +19,16 @@ public class TextHelper {
     public static String generateRandomId(int length) {
         return generateRandomId(length, 0, 9);
     }
+
+    public static Integer randomInt(int randomNumberOrigin, int randomNumberBound) {
+        return new Random(System.nanoTime()).ints(randomNumberOrigin, randomNumberBound).findFirst().getAsInt();
+    }
+
+    public static Long randomLong(long randomNumberOrigin, long randomNumberBound) {
+        return new Random(System.nanoTime()).longs(randomNumberOrigin, randomNumberBound).findFirst().getAsLong();
+    }
+
+    public static Double randomDouble(double randomNumberOrigin, double randomNumberBound) {
+        return new Random(System.nanoTime()).doubles(randomNumberOrigin, randomNumberBound).findFirst().getAsDouble();
+    }
 }
