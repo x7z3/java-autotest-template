@@ -101,4 +101,8 @@ public class XmlHelper {
     public static void changeXmlTagsValue(Document xmlDocument, String tagName, Iterator<?> iterator) {
         xmlNodeList(xmlDocument, tagName).forEach(node -> node.setTextContent(iterator.next().toString()));
     }
+
+    public static Boolean compareXmlDocuments(Document a, Document b) {
+        return a.isEqualNode(b);
+    }
 }
