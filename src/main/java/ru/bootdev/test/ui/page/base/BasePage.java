@@ -1,8 +1,11 @@
 package ru.bootdev.test.ui.page.base;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
@@ -23,5 +26,13 @@ public class BasePage {
 
     public boolean hasText(String text) {
         return $(withText(text)).shouldBe(Condition.appear).isDisplayed();
+    }
+
+    public void waitForLoad() {
+        new WebDriverWait(driver, Configuration.pageLoadTimeout, 500).until(w -> isPageLoaded());
+    }
+
+    private Boolean isPageLoaded() {
+        return Selenide.executeJavaScript("return document.readyState").toString().contains("complete");
     }
 }
