@@ -84,32 +84,32 @@ public class DateTimeHelper {
         return dateTime(OffsetDateTime.now(), format);
     }
 
-    public static OffsetDateTime parseTime(String dateTime) {
+    public static OffsetDateTime parseDate(String dateTime) {
         return OffsetDateTime.parse(dateTime);
     }
 
-    public static OffsetDateTime parseTime(int year, int month, int day, int hour, int minute, int second, int nanoSecond, ZoneOffset zoneOffset) {
+    public static OffsetDateTime parseDate(int year, int month, int day, int hour, int minute, int second, int nanoSecond, ZoneOffset zoneOffset) {
         return OffsetDateTime.of(year, month, day, hour, minute, second, nanoSecond, zoneOffset);
     }
 
-    public static OffsetDateTime parseTime(int year, int month, int day, int hour, int minute, int second, int nanoSecond) {
-        return parseTime(year, month, day, hour, minute, second, nanoSecond, defaultZoneOffset);
+    public static OffsetDateTime parseDate(int year, int month, int day, int hour, int minute, int second, int nanoSecond) {
+        return parseDate(year, month, day, hour, minute, second, nanoSecond, defaultZoneOffset);
     }
 
-    public static OffsetDateTime parseTime(int year, int month, int day, int hour, int minute, int second) {
-        return parseTime(year, month, day, hour, minute, second, 0, defaultZoneOffset);
+    public static OffsetDateTime parseDate(int year, int month, int day, int hour, int minute, int second) {
+        return parseDate(year, month, day, hour, minute, second, 0, defaultZoneOffset);
     }
 
-    public static OffsetDateTime parseTime(int year, int month, int day, int hour, int minute) {
-        return parseTime(year, month, day, hour, minute, 0, 0, defaultZoneOffset);
+    public static OffsetDateTime parseDate(int year, int month, int day, int hour, int minute) {
+        return parseDate(year, month, day, hour, minute, 0, 0, defaultZoneOffset);
     }
 
-    public static OffsetDateTime parseTime(int year, int month, int day, int hour) {
-        return parseTime(year, month, day, hour, 0, 0, 0, defaultZoneOffset);
+    public static OffsetDateTime parseDate(int year, int month, int day, int hour) {
+        return parseDate(year, month, day, hour, 0, 0, 0, defaultZoneOffset);
     }
 
-    public static OffsetDateTime parseTime(int year, int month, int day) {
-        return parseTime(year, month, day, 0, 0, 0, 0, defaultZoneOffset);
+    public static OffsetDateTime parseDate(int year, int month, int day) {
+        return parseDate(year, month, day, 0, 0, 0, 0, defaultZoneOffset);
     }
 
     public static long nanos(OffsetDateTime dateTime) {
