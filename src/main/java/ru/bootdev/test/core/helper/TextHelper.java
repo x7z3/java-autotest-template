@@ -31,4 +31,8 @@ public class TextHelper {
     public static Double randomDouble(double randomNumberOrigin, double randomNumberBound) {
         return new Random(System.nanoTime()).doubles(randomNumberOrigin, randomNumberBound).findFirst().getAsDouble();
     }
+
+    public static String stringToFileName(String str) {
+        return str.replaceAll("[|\\\\/?:*\"><]", "-").replace(" ", "_");
+    }
 }
