@@ -32,6 +32,8 @@ import java.util.Optional;
 import static ru.bootdev.test.core.helper.FileHelper.*;
 import static ru.bootdev.test.core.helper.SendReportHelper.sendAllureReport;
 import static ru.bootdev.test.core.helper.SendReportHelper.sendJiraReport;
+import static ru.bootdev.test.core.properties.AllureProperties.*;
+import static ru.bootdev.test.core.properties.JiraProperties.*;
 import static ru.bootdev.test.core.tm4j.TestCaseId.getTestCaseIdByMethodName;
 
 public class SuiteListener implements TestExecutionListener {
@@ -52,8 +54,8 @@ public class SuiteListener implements TestExecutionListener {
 
     @Override
     public void testPlanExecutionFinished(TestPlan testPlan) {
-        if (JiraProperties.JIRA_IS_SEND_RESULTS_ENABLED) sendJiraResults();
-        if (AllureProperties.ALLURE_IS_SEND_RESULTS_ENABLED) sendAllureResults();
+        if (JIRA_IS_SEND_RESULTS_ENABLED) sendJiraResults();
+        if (ALLURE_IS_SEND_RESULTS_ENABLED) sendAllureResults();
     }
 
     private void restAssuredSetUp() {
@@ -104,11 +106,11 @@ public class SuiteListener implements TestExecutionListener {
             e.printStackTrace();
         }
         File jiraZippedResults = packFileToZip(createTmpFile(), new File(ResultFile.DEFAULT_TM4J_RESULT_FILE_NAME));
-        sendJiraReport(JiraProperties.JIRA_RESULTS_ENDPOINT, JiraProperties.JIRA_USER, JiraProperties.JIRA_PASSWORD, jiraZippedResults);
+        sendJiraReport(JIRA_RESULTS_ENDPOINT, JIRA_USER, JIRA_PASSWORD, jiraZippedResults);
     }
 
     private static void sendAllureResults() {
-        List<File> allureFiles = getDirectoryFiles(AllureProperties.ALLURE_RESULTS_DIRECTORY);
-        sendAllureReport(AllureProperties.ALLURE_SEND_RESULTS_URL, allureFiles.toArray(new File[0]));
+        List<File> allureFiles = getDirectoryFiles(ALLURE_RESULTS_DIRECTORY);
+        sendAllureReport(ALLURE_SEND_RESULTS_URL, allureFiles.toArray(new File[0]));
     }
 }

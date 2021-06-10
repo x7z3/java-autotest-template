@@ -12,6 +12,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 
+import static ru.bootdev.test.core.properties.WebDriverProperties.*;
+
 public class DriverInitializer {
 
     private static Boolean isRemoteDriver;
@@ -21,12 +23,12 @@ public class DriverInitializer {
     private static final Boolean headless;
 
     static {
-        chromeSwitches = WebDriverProperties.CHROME_ARGUMENTS;
-        firefoxSwitches = WebDriverProperties.FIREFOX_ARGUMENTS;
-        headless = WebDriverProperties.HEADLESS_MODE;
+        chromeSwitches = CHROME_ARGUMENTS;
+        firefoxSwitches = FIREFOX_ARGUMENTS;
+        headless = HEADLESS_MODE;
         try {
-            remoteDriver = new URL(WebDriverProperties.REMOTE_DRIVER_HUB);
-            isRemoteDriver = WebDriverProperties.REMOTE_DRIVER;
+            remoteDriver = new URL(REMOTE_DRIVER_HUB_URL);
+            isRemoteDriver = REMOTE_DRIVER;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
@@ -53,7 +55,7 @@ public class DriverInitializer {
     }
 
     public static WebDriver initDriver() {
-        if ("firefox".equals(WebDriverProperties.DRIVER)) {
+        if ("firefox".equals(DRIVER)) {
             return isRemoteDriver
                     ? new RemoteWebDriver(remoteDriver, firefoxDriverOptions())
                     : new FirefoxDriver(firefoxDriverOptions());

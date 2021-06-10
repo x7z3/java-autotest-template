@@ -7,6 +7,7 @@ import com.codeborne.selenide.WebDriverRunner;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
@@ -25,7 +26,7 @@ public class BasePage {
     }
 
     public boolean hasText(String text) {
-        return $(withText(text)).shouldBe(Condition.appear).isDisplayed();
+        return $(withText(text)).should(appear).isDisplayed();
     }
 
     public void waitForLoad() {

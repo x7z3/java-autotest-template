@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 
 import static com.codeborne.selenide.Selenide.open;
+import static ru.bootdev.test.core.properties.WebDriverProperties.*;
 
 public class UIExtension implements BeforeEachCallback, TestWatcher {
 
@@ -23,7 +24,7 @@ public class UIExtension implements BeforeEachCallback, TestWatcher {
     public void beforeEach(ExtensionContext extensionContext) {
         WebDriverRunner.setWebDriver(DriverInitializer.initDriver());
         open("about:blank");
-        if (WebDriverProperties.WINDOW_MAXIMIZE) {
+        if (WINDOW_MAXIMIZE) {
             WebDriverRunner.getWebDriver().manage().window().maximize();
         }
     }
