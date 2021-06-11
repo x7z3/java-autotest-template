@@ -36,4 +36,28 @@ public class BasePage {
     private Boolean isPageLoaded() {
         return Selenide.executeJavaScript("return document.readyState").toString().contains("complete");
     }
+
+    public void waitPopup(String popupMessage) {
+        $(withText(popupMessage)).should(appear);
+        $(withText(popupMessage)).should(disappear);
+    }
+
+    public void closeAndSwitch() {
+        String currentTab = driver.getWindowHandle();
+        driver.close();
+        driver.getWindowHandles().stream().filter(tab -> !tab.equals(currentTab)).findFirst()
+                .ifPresent(newTab -> driver.switchTo().window(newTab));
+    }
+
+    public void refresh() {
+        driver.navigate().refresh();
+    }
+
+    public String getPageSource() {
+        return driver.getPageSource();
+    }
+
+    public String getPageUrl() {
+        return driver.getCurrentUrl();
+    }
 }
