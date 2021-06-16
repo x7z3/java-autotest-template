@@ -84,8 +84,12 @@ public class DateTimeHelper {
         return dateTime(OffsetDateTime.now(), format);
     }
 
-    public static OffsetDateTime parseDate(String dateTime) {
-        return OffsetDateTime.parse(dateTime);
+    public static LocalDateTime parseDate(String dateTime) {
+        return LocalDateTime.parse(dateTime);
+    }
+
+    public static LocalDateTime parseDate(String dateTime, DateTimeFormatter dateTimeFormatter) {
+        return LocalDateTime.parse(dateTime, dateTimeFormatter);
     }
 
     public static OffsetDateTime parseDate(int year, int month, int day, int hour, int minute, int second, int nanoSecond, ZoneOffset zoneOffset) {
