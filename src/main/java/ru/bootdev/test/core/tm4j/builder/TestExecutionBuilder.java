@@ -1,11 +1,16 @@
 package ru.bootdev.test.core.tm4j.builder;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.TmsLink;
+import io.qameta.allure.model.Link;
+import io.qameta.allure.model.TestResult;
 import ru.bootdev.test.core.tm4j.TestCase;
 import ru.bootdev.test.core.tm4j.model.TestCaseModel;
 import ru.bootdev.test.core.tm4j.model.TestExecutionModel;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static ru.bootdev.test.core.tm4j.TestCaseId.getTestCaseIdByMethodName;
 
@@ -38,6 +43,11 @@ public class TestExecutionBuilder {
         } else {
             key = getTestCaseIdByMethodName(testMethod.getName());
         }
+
+        AtomicReference<TestResult> allureTestResult = new AtomicReference<>();
+        Allure.getLifecycle().updateTestCase(allureTestResult::set);
+        Optional<Link> tms = allureTestResult.get().getLinks().stream().filter(link -> link.getType().equals("tms")).findFirst();
+        if (tms.isPresent()) key = tms.get().getName();
 
         if (key == null && name == null) return null;
         return new TestCaseModel(key, name);
