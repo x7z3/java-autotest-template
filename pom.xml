@@ -204,14 +204,14 @@
                         <!-- JUnit Allure properties -->
                         <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
                         <!-- Allure configuration -->
-                        <allure.send.results>true</allure.send.results>
+                        <allure.send.results>false</allure.send.results>
                         <allure.project.name>test-project</allure.project.name>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                         <allure.server.baseUrl>${allure.server.baseUrl}</allure.server.baseUrl>
                         <allure.link.issue.pattern>${allure.link.issue.pattern}</allure.link.issue.pattern>
                         <allure.link.tms.pattern>${allure.link.tms.pattern}</allure.link.tms.pattern>
                         <!-- Jira configuration -->
-                        <jira.send.results>true</jira.send.results>
+                        <jira.send.results>false</jira.send.results>
                         <jira.user>user</jira.user>
                         <jira.password>password</jira.password>
                         <jira.results.endpoint>${jira.results.endpoint}</jira.results.endpoint>

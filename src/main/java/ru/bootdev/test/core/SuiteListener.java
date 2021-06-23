@@ -14,8 +14,6 @@ import org.junit.platform.engine.support.descriptor.MethodSource;
 import org.junit.platform.launcher.TestExecutionListener;
 import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.TestPlan;
-import ru.bootdev.test.core.properties.AllureProperties;
-import ru.bootdev.test.core.properties.JiraProperties;
 import ru.bootdev.test.core.tm4j.TestCase;
 import ru.bootdev.test.core.tm4j.TestResult;
 import ru.bootdev.test.core.tm4j.builder.TestExecutionBuilder;
@@ -54,8 +52,13 @@ public class SuiteListener implements TestExecutionListener {
 
     @Override
     public void testPlanExecutionFinished(TestPlan testPlan) {
-        if (JIRA_IS_SEND_RESULTS_ENABLED) sendJiraResults();
-        if (ALLURE_IS_SEND_RESULTS_ENABLED) sendAllureResults();
+        try {
+            ResultFile.generateResultFile(TestRunBuilder.getInstance().getTestRunModel());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (JIRA_SEND_RESULTS_ENABLED) sendJiraResults();
+        if (ALLURE_SEND_RESULTS_ENABLED) sendAllureResults();
     }
 
     private void restAssuredSetUp() {
@@ -100,11 +103,6 @@ public class SuiteListener implements TestExecutionListener {
     }
 
     private static void sendJiraResults() {
-        try {
-            ResultFile.generateResultFile(TestRunBuilder.getInstance().getTestRunModel());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         File jiraZippedResults = packFileToZip(createTmpFile(), new File(ResultFile.DEFAULT_TM4J_RESULT_FILE_NAME));
         sendJiraReport(JIRA_RESULTS_ENDPOINT, JIRA_USER, JIRA_PASSWORD, jiraZippedResults);
     }
