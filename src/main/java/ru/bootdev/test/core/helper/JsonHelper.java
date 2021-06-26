@@ -1,6 +1,8 @@
 package ru.bootdev.test.core.helper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -43,6 +45,18 @@ public class JsonHelper {
 
     public static <T> T jsonNodeToObject(JsonNode jsonNode, Class<T> clazz) throws JsonProcessingException {
         return mapper.treeToValue(jsonNode, clazz);
+    }
+
+    public static  <T> T convert(Object fromValue, Class<T> toValueType) {
+        return mapper.convertValue(fromValue, toValueType);
+    }
+
+    public static  <T> T convert(Object fromValue, TypeReference<T> toValueType)  {
+        return mapper.convertValue(fromValue, toValueType);
+    }
+
+    public static  <T> T convert(Object fromValue, JavaType toValueType)  {
+        return mapper.convertValue(fromValue, toValueType);
     }
 
     public static void objectToJsonFile(Object object, File jsonFile) throws IOException {
