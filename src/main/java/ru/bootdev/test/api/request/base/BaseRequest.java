@@ -12,6 +12,7 @@ import static io.restassured.RestAssured.given;
 public class BaseRequest {
 
     protected final static String MULTIPART_FORM_DATA = "multipart/form-data";
+    protected final String hostUrl = System.getProperty("api.host.url");
 
     public ValidatableResponse get(String url) {
         return given().accept(ContentType.ANY).when().get(url).then();

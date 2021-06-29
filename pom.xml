@@ -187,7 +187,8 @@
                     </excludes>
                     <systemPropertyVariables>
                         <!-- common properties -->
-                        <service.host.url>https://example.com</service.host.url>
+                        <web.host.url>https://example.com</web.host.url>
+                        <api.host.url>https://api.example.com</api.host.url>
                         <!-- UI tests properties -->
                         <webdriver.driver>${webdriver.driver}</webdriver.driver>
                         <webdriver.remote.hub>${webdriver.remote.hub}</webdriver.remote.hub>
