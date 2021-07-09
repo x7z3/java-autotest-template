@@ -18,7 +18,6 @@ import ru.bootdev.test.core.tm4j.TestCase;
 import ru.bootdev.test.core.tm4j.TestResult;
 import ru.bootdev.test.core.tm4j.builder.TestExecutionBuilder;
 import ru.bootdev.test.core.tm4j.builder.TestRunBuilder;
-import ru.bootdev.test.core.tm4j.file.ResultFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,12 +26,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.platform.engine.TestExecutionResult.Status.FAILED;
+import static org.junit.platform.engine.TestExecutionResult.Status.SUCCESSFUL;
 import static ru.bootdev.test.core.helper.FileHelper.*;
 import static ru.bootdev.test.core.helper.SendReportHelper.sendAllureReport;
 import static ru.bootdev.test.core.helper.SendReportHelper.sendJiraReport;
 import static ru.bootdev.test.core.properties.AllureProperties.*;
 import static ru.bootdev.test.core.properties.JiraProperties.*;
 import static ru.bootdev.test.core.tm4j.TestCaseId.getTestCaseIdByMethodName;
+import static ru.bootdev.test.core.tm4j.file.ResultFile.DEFAULT_TM4J_RESULT_FILE_NAME;
+import static ru.bootdev.test.core.tm4j.file.ResultFile.generateResultFile;
 
 public class SuiteListener implements TestExecutionListener {
 
@@ -53,7 +56,7 @@ public class SuiteListener implements TestExecutionListener {
     @Override
     public void testPlanExecutionFinished(TestPlan testPlan) {
         try {
-            ResultFile.generateResultFile(TestRunBuilder.getInstance().getTestRunModel());
+            generateResultFile(TestRunBuilder.getInstance().getTestRunModel());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,7 +85,7 @@ public class SuiteListener implements TestExecutionListener {
     private Method getMethodFromTestIdentifier(TestIdentifier testIdentifier) {
         Optional<TestSource> testSource = testIdentifier.getSource();
         if (!testSource.isPresent()) return null;
-        if (testSource.get().getClass().getSimpleName().equals("MethodSource"))
+        if (testSource.get() instanceof MethodSource)
             return ((MethodSource) testSource.get()).getJavaMethod();
         return null;
     }
@@ -92,18 +95,15 @@ public class SuiteListener implements TestExecutionListener {
     }
 
     private void gatherTestResult(Method testMethod, TestExecutionResult.Status status) {
-        switch (status) {
-            case SUCCESSFUL:
-                addTestResult(testMethod, TestResult.PASSED);
-                break;
-            case FAILED:
-                addTestResult(testMethod, TestResult.FAILED);
-                break;
+        if (status == SUCCESSFUL) {
+            addTestResult(testMethod, TestResult.PASSED);
+        } else if (status == FAILED) {
+            addTestResult(testMethod, TestResult.FAILED);
         }
     }
 
     private static void sendJiraResults() {
-        File jiraZippedResults = packFileToZip(createTmpFile(), new File(ResultFile.DEFAULT_TM4J_RESULT_FILE_NAME));
+        File jiraZippedResults = packFileToZip(createTmpFile(), new File(DEFAULT_TM4J_RESULT_FILE_NAME));
         sendJiraReport(JIRA_RESULTS_ENDPOINT, JIRA_USER, JIRA_PASSWORD, jiraZippedResults);
     }
 

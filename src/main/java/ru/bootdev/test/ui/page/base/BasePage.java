@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
+import static ru.bootdev.test.ui.page.base.JavaScriptEvent.*;
 
 public class BasePage {
 
@@ -59,51 +60,55 @@ public class BasePage {
     }
 
     private void jsDispatchEvent(SelenideElement element, String eventClass, String eventMethod) {
-        Selenide.executeJavaScript(String.format("arguments[0].dispatchEvent(new %s(\"%s\", {\"bubbles\":true}));",
+        Selenide.executeJavaScript(String.format("arguments[0].dispatchEvent(new %s('%s', {'bubbles':true}));",
                 eventClass, eventMethod), element);
     }
 
     protected void jsClick(SelenideElement element) {
-        jsDispatchEvent(element, "MouseEvent", "click");
+        jsDispatchEvent(element, MOUSE_EVENT, "click");
     }
 
     protected void jsMouseOver(SelenideElement element) {
-        jsDispatchEvent(element, "MouseEvent", "mouseover");
+        jsDispatchEvent(element, MOUSE_EVENT, "mouseover");
     }
 
     protected void jsMouseOut(SelenideElement element) {
-        jsDispatchEvent(element, "MouseEvent", "mouseout");
+        jsDispatchEvent(element, MOUSE_EVENT, "mouseout");
     }
 
     protected void jsInput(SelenideElement element) {
-        jsDispatchEvent(element, "InputEvent", "input");
+        jsDispatchEvent(element, INPUT_EVENT, "input");
     }
 
     protected void jsFocusIn(SelenideElement element) {
-        jsDispatchEvent(element, "FocusEvent", "focusin");
+        jsDispatchEvent(element, FOCUS_EVENT, "focusin");
     }
 
     protected void jsFocusOut(SelenideElement element) {
-        jsDispatchEvent(element, "FocusEvent", "focusout");
+        jsDispatchEvent(element, FOCUS_EVENT, "focusout");
     }
 
     protected void jsKeyPress(SelenideElement element) {
-        jsDispatchEvent(element, "KeyboardEvent", "keypress");
+        jsDispatchEvent(element, KEYBOARD_EVENT, "keypress");
     }
 
     protected void jsKeyDown(SelenideElement element) {
-        jsDispatchEvent(element, "KeyboardEvent", "keydown");
+        jsDispatchEvent(element, KEYBOARD_EVENT, "keydown");
     }
 
     protected void jsKeyUp(SelenideElement element) {
-        jsDispatchEvent(element, "KeyboardEvent", "keyup");
+        jsDispatchEvent(element, KEYBOARD_EVENT, "keyup");
     }
 
     protected void jsWheel(SelenideElement element) {
-        jsDispatchEvent(element, "WheelEvent", "wheel");
+        jsDispatchEvent(element, WHEEL_EVENT, "wheel");
     }
 
     protected void jsScroll(SelenideElement element) {
-        jsDispatchEvent(element, "Event", "scroll");
+        jsDispatchEvent(element, EVENT, "scroll");
+    }
+
+    protected void click(SelenideElement element) {
+        element.should(appear).click();
     }
 }

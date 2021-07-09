@@ -8,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.OutputType;
 import ru.bootdev.test.core.DriverInitializer;
-import ru.bootdev.test.core.properties.WebDriverProperties;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +15,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 
 import static com.codeborne.selenide.Selenide.open;
-import static ru.bootdev.test.core.properties.WebDriverProperties.*;
+import static ru.bootdev.test.core.properties.WebDriverProperties.WINDOW_MAXIMIZE;
 
 public class UIExtension implements BeforeEachCallback, TestWatcher {
 

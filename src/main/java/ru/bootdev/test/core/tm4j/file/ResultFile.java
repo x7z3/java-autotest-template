@@ -10,6 +10,9 @@ public class ResultFile {
 
     public static final String DEFAULT_TM4J_RESULT_FILE_NAME = "tm4j_result.json";
 
+    private ResultFile() {
+    }
+
     public static void generateResultFile(TestRunModel testRunModel) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(new File(DEFAULT_TM4J_RESULT_FILE_NAME), testRunModel);

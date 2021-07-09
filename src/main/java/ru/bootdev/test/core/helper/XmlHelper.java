@@ -9,6 +9,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -28,6 +29,9 @@ import java.util.function.Consumer;
 public class XmlHelper {
 
     private static final XmlMapper mapper = new XmlMapper();
+
+    private XmlHelper() {
+    }
 
     public static JsonNode getXmlNode(String xmlText) throws JsonProcessingException {
         return mapper.readTree(xmlText);
@@ -57,26 +61,40 @@ public class XmlHelper {
         return mapper.writeValueAsString(xmlNode);
     }
 
+    private static DocumentBuilderFactory documentBuilderFactory() {
+        DocumentBuilderFactory df = DocumentBuilderFactory.newInstance();
+        df.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        df.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        return df;
+    }
+
     public static Document xmlStringToDocument(String xmlText) throws ParserConfigurationException, IOException, SAXException {
-        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(xmlText)));
+        return documentBuilderFactory().newDocumentBuilder().parse(new InputSource(new StringReader(xmlText)));
     }
 
     public static Document xmlFileToDocument(File xmlFile) throws ParserConfigurationException, IOException, SAXException {
-        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(xmlFile);
+        return documentBuilderFactory().newDocumentBuilder().parse(xmlFile);
     }
 
     public static Document xmlUriToDocument(String uri) throws ParserConfigurationException, IOException, SAXException {
-        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(uri);
+        return documentBuilderFactory().newDocumentBuilder().parse(uri);
+    }
+
+    private static TransformerFactory transformerFactory() {
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        return transformerFactory;
     }
 
     public static String xmlDocumentToString(Document xmlDocument) throws TransformerException {
         StringWriter writer = new StringWriter();
-        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(xmlDocument), new StreamResult(writer));
+        transformerFactory().newTransformer().transform(new DOMSource(xmlDocument), new StreamResult(writer));
         return writer.getBuffer().toString();
     }
 
     public static File xmlDocumentToFile(Document xmlDocument, File outputXmlFile) throws TransformerException {
-        TransformerFactory.newInstance().newTransformer().transform(new DOMSource(xmlDocument), new StreamResult(outputXmlFile));
+        transformerFactory().newTransformer().transform(new DOMSource(xmlDocument), new StreamResult(outputXmlFile));
         return outputXmlFile;
     }
 

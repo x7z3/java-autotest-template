@@ -6,7 +6,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import ru.bootdev.test.core.properties.WebDriverProperties;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,16 +15,10 @@ import static ru.bootdev.test.core.properties.WebDriverProperties.*;
 
 public class DriverInitializer {
 
-    private static Boolean isRemoteDriver;
+    private static boolean isRemoteDriver;
     private static URL remoteDriver;
-    private static final String chromeSwitches;
-    private static final String firefoxSwitches;
-    private static final Boolean headless;
 
     static {
-        chromeSwitches = CHROME_ARGUMENTS;
-        firefoxSwitches = FIREFOX_ARGUMENTS;
-        headless = HEADLESS_MODE;
         try {
             remoteDriver = new URL(REMOTE_DRIVER_HUB_URL);
             isRemoteDriver = REMOTE_DRIVER;
@@ -34,19 +27,22 @@ public class DriverInitializer {
         }
     }
 
+    private DriverInitializer() {
+    }
+
     private static ChromeOptions chromeDriverOptions() {
         ChromeOptions options = new ChromeOptions();
-        String[] chromeArguments = splitArguments(chromeSwitches);
+        String[] chromeArguments = splitArguments(CHROME_ARGUMENTS);
         options.addArguments(chromeArguments);
-        options.setHeadless(headless);
+        options.setHeadless(HEADLESS_MODE);
         return options;
     }
 
     private static FirefoxOptions firefoxDriverOptions() {
         FirefoxOptions options = new FirefoxOptions();
-        String[] firefoxArguments = splitArguments(firefoxSwitches);
+        String[] firefoxArguments = splitArguments(FIREFOX_ARGUMENTS);
         options.addArguments(firefoxArguments);
-        options.setHeadless(headless);
+        options.setHeadless(HEADLESS_MODE);
         return options;
     }
 

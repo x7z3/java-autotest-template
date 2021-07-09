@@ -31,7 +31,8 @@ public class TestExecutionBuilder {
     }
 
     private TestCaseModel getTestCaseModel() {
-        String key = null, name = null;
+        String key = null;
+        String name = null;
         TestCase testCase = testMethod.getAnnotation(TestCase.class);
         TmsLink tmsLink = testMethod.getAnnotation(TmsLink.class);
 

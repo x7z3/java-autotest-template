@@ -9,10 +9,12 @@ import java.util.Arrays;
 import java.util.function.Consumer;
 
 import static org.junit.platform.engine.discovery.ClassNameFilter.includeClassNamePatterns;
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
-import static org.junit.platform.engine.discovery.DiscoverySelectors.selectPackage;
+import static org.junit.platform.engine.discovery.DiscoverySelectors.*;
 
 public class TestRunner {
+
+    private TestRunner() {
+    }
 
     public static void runPackage(String packageName, String classFilter) {
         runInstance(requestBuilder -> requestBuilder
@@ -29,7 +31,7 @@ public class TestRunner {
     public static void runMethod(Class<?> javaClass, String... methodNames) {
         if (methodNames.length == 0) return;
         runInstance(requestBuilder -> Arrays.stream(methodNames)
-                .forEach(className -> requestBuilder.selectors(selectClass(className))));
+                .forEach(methodName -> requestBuilder.selectors(selectMethod(javaClass, methodName))));
     }
 
     private static void runInstance(Consumer<LauncherDiscoveryRequestBuilder> requestBuilderConsumer) {

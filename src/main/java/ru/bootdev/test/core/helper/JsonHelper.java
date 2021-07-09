@@ -15,6 +15,9 @@ public class JsonHelper {
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
+    private JsonHelper() {
+    }
+
     public static Boolean compareJsons(String json1, String json2) throws JsonProcessingException {
         return compareJsonNodes(getJsonNode(json1), getJsonNode(json2));
     }

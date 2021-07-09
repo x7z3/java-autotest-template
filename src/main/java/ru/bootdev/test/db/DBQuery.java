@@ -3,6 +3,7 @@ package ru.bootdev.test.db;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,21 +41,14 @@ public class DBQuery {
         List<T> resultList = new ArrayList<>();
         while (resultSet.next()) {
             try {
-                T resultRow = (T) constructor.newInstance(new Object[0]);
+                T resultRow = (T) constructor.newInstance();
                 for (Field modelField : modelFields) {
-                    if (ignoreUnknownColumns) {
-                        try {
-                            changeObjectFieldValue(resultRow, modelField);
-                        } catch (Exception ignored) {
-                        }
-                    } else {
-                        changeObjectFieldValue(resultRow, modelField);
-                    }
+                    changeObjectFieldValue(resultRow, modelField, ignoreUnknownColumns);
                 }
                 resultList.add(resultRow);
-            } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 e.printStackTrace();
-                return null;
+                return new ArrayList<>();
             }
         }
 
@@ -62,12 +56,20 @@ public class DBQuery {
         return resultList;
     }
 
-    private void changeObjectFieldValue(Object modelObject, Field modelField) throws IllegalAccessException, SQLException {
+    private void changeObjectFieldValue(Object modelObject, Field modelField, boolean ignoreUnknownColumns)
+            throws IllegalAccessException, SQLException, InvocationTargetException, NoSuchMethodException {
         String sqlColumnName = modelField.getAnnotation(SQLColumn.class).value();
         Class<?> modelFieldType = modelField.getType();
-        modelField.setAccessible(true);
-        modelField.set(modelObject, modelFieldType.cast(getSqlFieldData(sqlColumnName, modelFieldType)));
-        modelField.setAccessible(false);
+        try {
+            Method method = modelObject.getClass().getMethod("set" + capitalizeFirstLetter(modelField.getName()), modelFieldType);
+            method.invoke(modelObject, modelFieldType.cast(getSqlFieldData(sqlColumnName, modelFieldType)));
+        } catch (IllegalAccessException | SQLException | NoSuchMethodException | InvocationTargetException e) {
+            if (!ignoreUnknownColumns) throw e;
+        }
+    }
+
+    private String capitalizeFirstLetter(String text) {
+        return text.substring(0, 1).toUpperCase() + text.substring(1);
     }
 
     private Object getSqlFieldData(String columnName, Class<?> cellType) throws SQLException {

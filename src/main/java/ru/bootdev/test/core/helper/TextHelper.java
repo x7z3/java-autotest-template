@@ -8,6 +8,9 @@ public class TextHelper {
         return String.valueOf(System.nanoTime());
     }
 
+    private TextHelper() {
+    }
+
     public static String generateRandomId(int length, int randomNumberOrigin, int randomNumberBound) {
         if (length <= 0) return "";
         StringBuilder buffer = new StringBuilder();

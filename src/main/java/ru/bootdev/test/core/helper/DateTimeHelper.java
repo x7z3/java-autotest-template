@@ -14,7 +14,10 @@ public class DateTimeHelper {
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
     private static OffsetDateTime dateTime = OffsetDateTime.now();
-    private static ZoneOffset defaultZoneOffset = dateTime.getOffset();
+    private static final ZoneOffset defaultZoneOffset = dateTime.getOffset();
+
+    private DateTimeHelper() {
+    }
 
     public static OffsetDateTime getDateTime() {
         return dateTime;

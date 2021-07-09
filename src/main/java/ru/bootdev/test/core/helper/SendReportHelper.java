@@ -10,6 +10,9 @@ import static io.restassured.RestAssured.given;
 
 public class SendReportHelper {
 
+    private SendReportHelper() {
+    }
+
     public static int sendAllureReport(String url, File... files) {
         if (url == null && files.length == 0) return -1;
         return sendMultipartRequest(given(), url, "files[]", files);

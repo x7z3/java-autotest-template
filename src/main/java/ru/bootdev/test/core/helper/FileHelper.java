@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class FileHelper {
@@ -19,8 +20,7 @@ public class FileHelper {
     public static final String TMP_DIR = System.getProperty("java.io.tmpdir");
     public static final String ALL_FILES = ".*";
 
-    private static void error(String error) {
-        System.err.println(error);
+    private FileHelper() {
     }
 
     public static File packFilesToZip(File zip, List<File> filesToPack) {
@@ -50,10 +50,10 @@ public class FileHelper {
         return getDirectoryFiles(path, ALL_FILES);
     }
 
-    public static List<File> getDirectoryFiles(String path, Function<File, Boolean> filter) {
+    public static List<File> getDirectoryFiles(String path, Predicate<File> filter) {
         File[] files = new File(path).listFiles();
-        if (files == null || files.length == 0) return null;
-        return Arrays.stream(files).filter(filter::apply).collect(Collectors.toList());
+        if (files == null || files.length == 0) return new ArrayList<>();
+        return Arrays.stream(files).filter(filter).collect(Collectors.toList());
     }
 
     public static void deleteFiles(List<File> files) {
@@ -63,8 +63,11 @@ public class FileHelper {
     public static void deleteFiles(File... files) {
         if (files.length == 0) return;
         Arrays.asList(files).forEach(file -> {
-            if (!file.delete())
-                error("Can't delete file " + file.getAbsolutePath());
+            try {
+                Files.delete(file.toPath());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
     }
 
