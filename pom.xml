@@ -189,6 +189,8 @@
                         <!-- common properties -->
                         <web.host.url>https://example.com</web.host.url>
                         <api.host.url>https://api.example.com</api.host.url>
+                        <test.rerun.count>3</test.rerun.count>
+                        <test.rerun.enabled>true</test.rerun.enabled>
                         <!-- UI tests properties -->
                         <webdriver.driver>${webdriver.driver}</webdriver.driver>
                         <webdriver.remote.hub>${webdriver.remote.hub}</webdriver.remote.hub>
@@ -216,6 +218,9 @@
                         <jira.user>user</jira.user>
                         <jira.password>password</jira.password>
                         <jira.results.endpoint>${jira.results.endpoint}</jira.results.endpoint>
+                        <!-- slf4j configuration -->
+                        <org.slf4j.simpleLogger.defaultLogLevel>DEBUG</org.slf4j.simpleLogger.defaultLogLevel>
+                        <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
