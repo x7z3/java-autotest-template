@@ -219,6 +219,9 @@
                         <jira.password>password</jira.password>
                         <jira.results.endpoint>${jira.results.endpoint}</jira.results.endpoint>
                         <!-- slf4j configuration -->
+                        <org.slf4j.simpleLogger.log.org.apache.http>ERROR</org.slf4j.simpleLogger.log.org.apache.http>
+                        <org.slf4j.simpleLogger.log.org.apache.http.wire>ERROR</org.slf4j.simpleLogger.log.org.apache.http.wire>
+                        <org.slf4j.simpleLogger.log.io.restassured.internal>ERROR</org.slf4j.simpleLogger.log.io.restassured.internal>
                         <org.slf4j.simpleLogger.defaultLogLevel>DEBUG</org.slf4j.simpleLogger.defaultLogLevel>
                         <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
                     </systemPropertyVariables>
