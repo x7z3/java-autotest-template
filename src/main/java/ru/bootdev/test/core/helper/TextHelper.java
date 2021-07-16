@@ -1,5 +1,6 @@
 package ru.bootdev.test.core.helper;
 
+import java.util.Base64;
 import java.util.Random;
 
 public class TextHelper {
@@ -37,5 +38,13 @@ public class TextHelper {
 
     public static String stringToFileName(String str) {
         return str.replaceAll("[|\\\\/?:*\"><]", "-").replace(" ", "_");
+    }
+
+    public static String base64Encode(String text) {
+        return new String(Base64.getEncoder().encode(text.getBytes()));
+    }
+
+    public static String base64Decode(String base64) {
+        return new String(Base64.getDecoder().decode(base64));
     }
 }

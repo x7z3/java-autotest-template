@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
+import static ru.bootdev.test.core.helper.TextHelper.base64Encode;
 
 public class SendReportHelper {
 
@@ -20,7 +21,8 @@ public class SendReportHelper {
 
     public static int sendJiraReport(String url, String user, String password, File... files) {
         if (url == null && user == null && password == null && files.length == 0) return -1;
-        RequestSpecification givenRequest = given().auth().preemptive().basic(user, password);
+        RequestSpecification givenRequest = given().contentType(ContentType.JSON)
+                .header("Authorization",  "Basic " + base64Encode(user + ":" + password));
         return sendMultipartRequest(givenRequest, url, "file", files);
     }
 
