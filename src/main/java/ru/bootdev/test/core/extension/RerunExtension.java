@@ -1,5 +1,6 @@
 package ru.bootdev.test.core.extension;
 
+import com.codeborne.selenide.WebDriverRunner;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.InvocationInterceptor;
 import org.junit.jupiter.api.extension.ReflectiveInvocationContext;
@@ -9,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static ru.bootdev.test.core.helper.WebDriverHelper.initWebDriver;
 import static ru.bootdev.test.core.properties.RerunProperties.TEST_RERUN_COUNT;
 import static ru.bootdev.test.core.properties.RerunProperties.TEST_RERUN_ENABLED;
 
@@ -36,7 +38,7 @@ public class RerunExtension implements InvocationInterceptor {
     private void rerun(Invocation<Void> invocation, ReflectiveInvocationContext<Method> invocationContext,
                        ExtensionContext extensionContext) throws Throwable {
         int rerunCount = TEST_RERUN_COUNT;
-        AtomicInteger currentRun = new AtomicInteger(0);
+        AtomicInteger currentRun = new AtomicInteger(1);
 
         try {
             invocation.proceed();
@@ -44,13 +46,11 @@ public class RerunExtension implements InvocationInterceptor {
             if (TEST_RERUN_ENABLED) {
                 Object testObject = extensionContext.getRequiredTestInstance();
                 Method testMethod = extensionContext.getRequiredTestMethod();
-                currentRun.incrementAndGet();
                 while (currentRun.get() <= rerunCount) {
                     logger.debug("Test run {}/{} of {}", currentRun.get(), rerunCount, extensionContext.getDisplayName());
                     try {
-                        testMethod.invoke(testObject, invocationContext != null
-                                ? invocationContext.getArguments().toArray()
-                                : new Object[]{});
+                        if (isWebBrowserUp()) restartWebBrowser();
+                        testMethod.invoke(testObject, methodArgs(invocationContext));
                         return;
                     } catch (Exception e) {
                         currentRun.incrementAndGet();
@@ -59,5 +59,21 @@ public class RerunExtension implements InvocationInterceptor {
             }
             throw throwable;
         }
+    }
+
+    private Object[] methodArgs(ReflectiveInvocationContext<Method> invocationContext) {
+        return invocationContext != null
+                ? invocationContext.getArguments().toArray()
+                : new Object[]{};
+    }
+
+    private boolean isWebBrowserUp() {
+        return WebDriverRunner.getWebDriver() != null;
+    }
+
+    private void restartWebBrowser() {
+        logger.debug("Restarting Web-Browser");
+        WebDriverRunner.getWebDriver().close();
+        initWebDriver();
     }
 }
