@@ -50,7 +50,7 @@ public class DriverInitializer {
         return Arrays.stream(arguments.split(";")).map(String::trim).toArray(String[]::new);
     }
 
-    public static WebDriver initDriver() {
+    public static WebDriver getWebDriver() {
         if ("firefox".equals(DRIVER)) {
             return isRemoteDriver
                     ? new RemoteWebDriver(remoteDriver, firefoxDriverOptions())
