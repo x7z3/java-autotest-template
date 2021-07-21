@@ -12,6 +12,8 @@ import org.xml.sax.SAXException;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -80,21 +82,18 @@ public class XmlHelper {
         return documentBuilderFactory().newDocumentBuilder().parse(uri);
     }
 
-    private static TransformerFactory transformerFactory() {
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
-        return transformerFactory;
+    private static Transformer transformer() throws TransformerConfigurationException {
+        return TransformerFactory.newInstance().newTransformer();
     }
 
     public static String xmlDocumentToString(Document xmlDocument) throws TransformerException {
         StringWriter writer = new StringWriter();
-        transformerFactory().newTransformer().transform(new DOMSource(xmlDocument), new StreamResult(writer));
+        transformer().transform(new DOMSource(xmlDocument), new StreamResult(writer));
         return writer.getBuffer().toString();
     }
 
     public static File xmlDocumentToFile(Document xmlDocument, File outputXmlFile) throws TransformerException {
-        transformerFactory().newTransformer().transform(new DOMSource(xmlDocument), new StreamResult(outputXmlFile));
+        transformer().transform(new DOMSource(xmlDocument), new StreamResult(outputXmlFile));
         return outputXmlFile;
     }
 
