@@ -15,7 +15,7 @@ import java.util.Optional;
 public class LoggerExtension implements AfterEachCallback, BeforeEachCallback {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static final String MESSAGE_TEMPLATE = "\n>>> 🧪 TEST: {} {} {}\n";
+    private static final String MESSAGE_TEMPLATE = "↓↓↓\n>>> 🧪 TEST: {} {} {}\n";
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
